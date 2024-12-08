@@ -43,7 +43,6 @@ const checkWin = function (game){
         if (tiles[i].getValue() && 
             tiles[i].getValue() === tiles[i + 1].getValue() && 
             tiles[i + 1].getValue() === tiles[i + 2].getValue()) {
-            console.log("¡Ganador en fila!");
             return true;
         }
     }
@@ -53,7 +52,6 @@ const checkWin = function (game){
         if (tiles[i].getValue() && 
             tiles[i].getValue() === tiles[i + 3].getValue() && 
             tiles[i + 3].getValue() === tiles[i + 6].getValue()) {
-            console.log("¡Ganador en columna!");
             return true;
         }
     }
@@ -62,14 +60,12 @@ const checkWin = function (game){
     if (tiles[0].getValue() && 
         tiles[0].getValue() === tiles[4].getValue() && 
         tiles[4].getValue() === tiles[8].getValue()) {
-        console.log("¡Ganador en diagonal!");
         return true;
     }
 
     if (tiles[2].getValue() && 
         tiles[2].getValue() === tiles[4].getValue() && 
         tiles[4].getValue() === tiles[6].getValue()) {
-        console.log("¡Ganador en diagonal!");
         return true;
     }
 
@@ -79,43 +75,56 @@ const checkWin = function (game){
 const startGame = function () {
     const game = createBoard();
     const buttons = document.querySelectorAll('.btn');
-    const players = [newPlayer("p1","X"),newPlayer("p2","O")];
+    const players = [newPlayer("p1", "X"), newPlayer("p2", "O")];
     let amountOfTurns = 0;
     players[0].turn = true;
 
 
-    buttons.forEach(button =>{
-        button.addEventListener('click', () =>{
+    game.tiles.forEach(tile => tile.setValue(null));
+    buttons.forEach(button => {
+        button.textContent = ""; 
+    });
 
-            if (game.tiles[button.textContent].getValue() != null){
+
+    buttons.forEach((button, index) => {
+        button.onclick = () => {
+
+            if (game.tiles[index].getValue() != null) {
                 alert("Already filled");
-            } 
-            else{
+            } else {
 
-                if(players[0].turn){ //if true
-                    players[0].tickTile(game.tiles[button.textContent]);
-                } else {
-                    players[1].tickTile(game.tiles[button.textContent]);
-                }
-
-                switchTurns(players);
-                console.log(amountOfTurns);
-                printBoard(game);
+                const currentPlayer = players.find(players => players.turn);
+                console.log(currentPlayer);
+                currentPlayer.tickTile(game.tiles[index]);
+                button.textContent = currentPlayer.playerMarker; 
                 amountOfTurns++;
-                if (amountOfTurns >= 5){
-                    
-                    if (amountOfTurns == 9 && !checkWin(game)){
-                        console.log("Its's a tie!");
+                switchTurns(players);
+                printBoard(game);
+
+                if (amountOfTurns >= 5) {
+                    if (amountOfTurns == 9 && !checkWin(game)) {
+                        console.log("It's a tie!");
+                        resetGame();
                     }
-                    if (checkWin(game)){
+                    if (checkWin(game)) {
                         console.log("Game Over!");
+                        resetGame();
                     }
                 }
-                    
             }
-        })
-    })  
+        };
+    });
+};
 
 
-} ();
+const resetGame = function (){
+    const resetBtn = document.getElementById("resetBtn");
+    resetBtn.classList.remove("hidden");
 
+    resetBtn.addEventListener('click', () =>{
+        startGame();
+        resetBtn.classList.add("hidden");
+    })
+}
+
+startGame();
