@@ -35,29 +35,87 @@ const switchTurns = function (players){
     })
 }
 
+const checkWin = function (game){
+    const tiles = game.tiles;
+
+    //check for a row win
+    for (let i = 0; i < 9; i += 3) {
+        if (tiles[i].getValue() && 
+            tiles[i].getValue() === tiles[i + 1].getValue() && 
+            tiles[i + 1].getValue() === tiles[i + 2].getValue()) {
+            console.log("¡Ganador en fila!");
+            return true;
+        }
+    }
+
+    //check for a column win
+    for (let i = 0; i < 3; i++) {
+        if (tiles[i].getValue() && 
+            tiles[i].getValue() === tiles[i + 3].getValue() && 
+            tiles[i + 3].getValue() === tiles[i + 6].getValue()) {
+            console.log("¡Ganador en columna!");
+            return true;
+        }
+    }
+
+    //diagonal wins
+    if (tiles[0].getValue() && 
+        tiles[0].getValue() === tiles[4].getValue() && 
+        tiles[4].getValue() === tiles[8].getValue()) {
+        console.log("¡Ganador en diagonal!");
+        return true;
+    }
+
+    if (tiles[2].getValue() && 
+        tiles[2].getValue() === tiles[4].getValue() && 
+        tiles[4].getValue() === tiles[6].getValue()) {
+        console.log("¡Ganador en diagonal!");
+        return true;
+    }
+
+    return false; 
+}
+
 const startGame = function () {
     const game = createBoard();
-    console.log(game)
+    const buttons = document.querySelectorAll('.btn');
     const players = [newPlayer("p1","X"),newPlayer("p2","O")];
+    let amountOfTurns = 0;
     players[0].turn = true;
 
-    const buttons = document.querySelectorAll('.btn');
+
     buttons.forEach(button =>{
         button.addEventListener('click', () =>{
+
             if (game.tiles[button.textContent].getValue() != null){
                 alert("Already filled");
-            } else{
+            } 
+            else{
+
                 if(players[0].turn){ //if true
                     players[0].tickTile(game.tiles[button.textContent]);
-                    switchTurns(players);
-                    printBoard(game);
                 } else {
                     players[1].tickTile(game.tiles[button.textContent]);
-                    switchTurns(players);
-                    printBoard(game);
                 }
+
+                switchTurns(players);
+                console.log(amountOfTurns);
+                printBoard(game);
+                amountOfTurns++;
+                if (amountOfTurns >= 5){
+                    
+                    if (amountOfTurns == 9 && !checkWin(game)){
+                        console.log("Its's a tie!");
+                    }
+                    if (checkWin(game)){
+                        console.log("Game Over!");
+                    }
+                }
+                    
             }
         })
     })  
+
+
 } ();
 
