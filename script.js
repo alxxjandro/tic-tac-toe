@@ -107,7 +107,13 @@ const startGame = function () {
                         resetGame();
                     }
                     if (checkWin(game)) {
-                        console.log("Game Over!");
+                        console.log(`${currentPlayer.playerMarker}'s wins!`);
+                        
+                        //make the buttons useless after winning a match 
+                        buttons.forEach(button => {
+                            button.onclick = null; 
+                        });
+
                         resetGame();
                     }
                 }
