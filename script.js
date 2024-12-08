@@ -90,6 +90,8 @@ const startGame = function () {
 
     game.tiles.forEach(tile => tile.setValue(null));
     buttons.forEach(button => {
+        button.classList.remove("Red");
+        button.classList.remove("Blue");
         button.textContent = ""; 
     });
 
@@ -105,11 +107,12 @@ const startGame = function () {
                 const nextPlayer = players.find(players => !players.turn);
                 currentPlayer.tickTile(game.tiles[index]);
                 
-                button.textContent = currentPlayer.playerMarker; 
                 amountOfTurns++;
+                writeMarker(button, currentPlayer);
                 switchTurns(players);
                 printBoard(game);
                 displayMsg(`It's ${nextPlayer.playerMarker}'s turn!`);
+
                 if (amountOfTurns >= 5) {
                     if (amountOfTurns == 9 && !checkWin(game)) {
                         displayMsg("It's a tie!");
@@ -130,6 +133,16 @@ const startGame = function () {
 };
 
 // ~ ~ ~ Help functions
+
+const writeMarker = function (button, player){
+    button.textContent = player.playerMarker; 
+    if (player.playerMarker == 'X'){
+        button.classList.add('Red');
+    } else{
+        button.classList.add('Blue');
+    }
+    return button;
+}
 
 const printBoard = function (game){
     console.log(game.tiles[0].getValue(), game.tiles[1].getValue(), game.tiles[2].getValue());
