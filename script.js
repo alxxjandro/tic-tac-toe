@@ -1,18 +1,11 @@
 
+// ~ ~ ~ Functionality 
+
 function createTile(){
     let value = null;
     const getValue = () => value;
     const setValue = (_value) => value = _value;
     return {value, getValue, setValue};
-}
-
-function newPlayer(name, marker){
-    let playerName = name;
-    let playerMarker = marker;
-    let turn = false;
-
-    const tickTile = (t) => t.setValue(playerMarker);
-    return {playerName, playerMarker, tickTile, turn};
 }
 
 const createBoard = function () {
@@ -23,10 +16,13 @@ const createBoard = function () {
     return {tiles};
 }
 
-const printBoard = function (game){
-    console.log(game.tiles[0].getValue(), game.tiles[1].getValue(), game.tiles[2].getValue());
-    console.log(game.tiles[3].getValue(), game.tiles[4].getValue(), game.tiles[5].getValue());
-    console.log(game.tiles[6].getValue(), game.tiles[7].getValue(), game.tiles[8].getValue());
+function newPlayer(name, marker){
+    let playerName = name;
+    let playerMarker = marker;
+    let turn = false;
+
+    const tickTile = (t) => t.setValue(playerMarker);
+    return {playerName, playerMarker, tickTile, turn};
 }
 
 const switchTurns = function (players){
@@ -72,12 +68,24 @@ const checkWin = function (game){
     return false; 
 }
 
+const resetGame = function (){
+    const resetBtn = document.getElementById("resetBtn");
+    resetBtn.classList.remove("hidden");
+
+    resetBtn.addEventListener('click', () =>{
+        startGame();
+        resetBtn.classList.add("hidden");
+    })
+}
+
 const startGame = function () {
     const game = createBoard();
     const buttons = document.querySelectorAll('.btn');
     const players = [newPlayer("p1", "X"), newPlayer("p2", "O")];
     let amountOfTurns = 0;
+
     players[0].turn = true;
+    displayMsg(`It's ${players[0].playerMarker}'s turn!`);
 
 
     game.tiles.forEach(tile => tile.setValue(null));
@@ -94,43 +102,47 @@ const startGame = function () {
             } else {
 
                 const currentPlayer = players.find(players => players.turn);
-                console.log(currentPlayer);
+                const nextPlayer = players.find(players => !players.turn);
                 currentPlayer.tickTile(game.tiles[index]);
+                
                 button.textContent = currentPlayer.playerMarker; 
                 amountOfTurns++;
                 switchTurns(players);
                 printBoard(game);
-
+                displayMsg(`It's ${nextPlayer.playerMarker}'s turn!`);
                 if (amountOfTurns >= 5) {
                     if (amountOfTurns == 9 && !checkWin(game)) {
-                        console.log("It's a tie!");
+                        displayMsg("It's a tie!");
                         resetGame();
                     }
                     if (checkWin(game)) {
-                        console.log(`${currentPlayer.playerMarker}'s wins!`);
-                        
-                        //make the buttons useless after winning a match 
+                        displayMsg(`${currentPlayer.playerMarker}'s win!`);
                         buttons.forEach(button => {
                             button.onclick = null; 
                         });
-
                         resetGame();
                     }
                 }
+                
             }
         };
     });
 };
 
+// ~ ~ ~ Help functions
 
-const resetGame = function (){
-    const resetBtn = document.getElementById("resetBtn");
-    resetBtn.classList.remove("hidden");
-
-    resetBtn.addEventListener('click', () =>{
-        startGame();
-        resetBtn.classList.add("hidden");
-    })
+const printBoard = function (game){
+    console.log(game.tiles[0].getValue(), game.tiles[1].getValue(), game.tiles[2].getValue());
+    console.log(game.tiles[3].getValue(), game.tiles[4].getValue(), game.tiles[5].getValue());
+    console.log(game.tiles[6].getValue(), game.tiles[7].getValue(), game.tiles[8].getValue());
 }
+
+const displayMsg = function (msg){
+    playerDisplay = document.getElementById("currentTurn");
+    playerDisplay.textContent = `${msg}`;
+}
+
+
+
 
 startGame();
