@@ -85,7 +85,7 @@ const startGame = function () {
     let amountOfTurns = 0;
 
     players[0].turn = true;
-    displayMsg(`It's ${players[0].playerMarker}'s turn!`);
+    displayMsg(`${players[0].playerMarker}'s turn!`);
 
 
     game.tiles.forEach(tile => tile.setValue(null));
@@ -111,7 +111,7 @@ const startGame = function () {
                 writeMarker(button, currentPlayer);
                 switchTurns(players);
                 printBoard(game);
-                displayMsg(`It's ${nextPlayer.playerMarker}'s turn!`);
+                displayMsg(`${nextPlayer.playerMarker}'s turn!`);
 
                 if (amountOfTurns >= 5) {
                     if (amountOfTurns == 9 && !checkWin(game)) {

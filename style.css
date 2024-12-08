@@ -17,7 +17,7 @@
 }
 
 body {
-    font-family: 'Times New Roman',"Poppins", sans-serif;
+    font-family: "Poppins", sans-serif;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -25,6 +25,47 @@ body {
     background-color: var(--color-background);
 }
 
+/* The layout itself */
+
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 40px;
+    margin: 0;
+}
+
+#currentTurn{
+    text-align: center;
+    line-height: 0;
+}
+
+#resetBtn{
+    width: 10rem;
+    height: 2.2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    background-color: #050505;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+#resetBtn:hover{
+    transform: scale(1.03);
+    background-color: var(--color-background);
+    border: var(--color-btn-text) 2px solid;
+    color: var(--color-btn-text);
+}
 
 /* Grid style */
 .grid-container {
@@ -67,20 +108,19 @@ body {
 }
 
 .btn:hover {
-   /* background-color: var(--color-btn-hover); */
    filter: brightness(95%);
     transform: scale(1.015); /* Efecto de agrandamiento */
 }
 
 .btn:active {
-    /* background-color: var(--color-btn-active); */
     transform: scale(0.96); /* Efecto de reducción */
 }
 
 /* Toggle Classes */
 .hidden{
-    display: none;
+    display: none; 
 }
+
 
 .Red{
     background-color:  var(--player-one-color);
@@ -94,3 +134,19 @@ body {
 .Blue:hover{
     filter: brightness(110%);
 }
+
+.credits{
+    padding-top: 3rem;
+    font-size: .7rem;
+}
+
+.credits > span{
+    color: black;
+    cursor: pointer;
+}
+
+ a{
+    text-decoration: none;
+    color: black;
+ }
+
