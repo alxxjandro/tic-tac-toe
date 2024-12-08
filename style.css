@@ -1,3 +1,40 @@
 .hidden{
     display: none;
 }
+
+.body{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.grid-container{
+    width: 450px;
+    height: 450px;
+    border: solid 1px red;
+    display: grid;
+}
+
+.grid-container > div{
+    display: flex;
+
+    gap: 6px;
+    justify-content: center;
+}
+
+.grid-row-one{
+    align-self: end;
+}
+
+.grid-row-two{
+    align-self: center;
+}
+
+.grid-row-three{
+    align-self: baseline;
+}
+
+.btn{
+    width: calc((450px/3)* .92);
+    height: calc((450px/3)* .92);
+}

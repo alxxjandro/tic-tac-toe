@@ -142,7 +142,4 @@ const displayMsg = function (msg){
     playerDisplay.textContent = `${msg}`;
 }
 
-
-
-
 startGame();
